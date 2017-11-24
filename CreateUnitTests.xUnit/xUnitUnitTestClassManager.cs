@@ -36,6 +36,12 @@ namespace xUnit.net.TestGenerator
         /// <summary>
         /// The code to force a test failure.
         /// </summary>
-        public override string AssertionFailure => "Assert.True(false, \"This test needs an implementation\")";
+        public override string AssertionFailure => @"// arrange
+
+// act
+
+// assert
+
+Assert.True(false, ""This test needs an implementation"")";
     }
 }
