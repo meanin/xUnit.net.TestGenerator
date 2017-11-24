@@ -9,8 +9,6 @@ using System.ComponentModel.Composition;
 using EnvDTE;
 using static VSLangProj.PrjKind;
 using System.Linq;
-using VSLangProj80;
-using VSLangProj;
 
 namespace xUnit.net.TestGenerator
 {
@@ -72,18 +70,13 @@ namespace xUnit.net.TestGenerator
         /// <returns><c>True</c> if <paramref name="project"/> is a unit test project, <c>false</c> otherwise.</returns>
         public override bool IsTestProject(Project project)
         {
-            bool result = false;
-
             if (project == null)
             {
                 throw new ArgumentNullException(nameof(project));
             }
-            result = base.IsTestProject(project);
-            if (!result)
-            {
-                if (project.Kind == prjKindCSharpProject || project.Kind == prjKindVBProject)
-                    result = ProjectHasReference(project, "xunit.core");
-            }
+            var result = base.IsTestProject(project);
+            if (!result && (project.Kind == prjKindCSharpProject || project.Kind == prjKindVBProject))
+                result = ProjectHasReference(project, "xunit.core");
 
             return result;
         }
@@ -95,22 +88,8 @@ namespace xUnit.net.TestGenerator
         /// <returns>True if project if tests can be generated for this project.</returns>
         public override bool IsTestableProject(Project project)
         {
-            // Base IsTestableProject filters C# and VB projects.
-            if (!base.IsTestableProject(project))
-            {
-                return false;
-            }
-
-            // Further restrict projects to C# desktop
-            foreach (var projectGuid in project.ProjectTypeGuids(this.serviceProvider))
-            {
-                if (this.unsupportedProjects.Contains(projectGuid))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return base.IsTestableProject(project) && project.ProjectTypeGuids(serviceProvider)
+                       .All(projectGuid => !unsupportedProjects.Contains(projectGuid));
         }
     }
 }
