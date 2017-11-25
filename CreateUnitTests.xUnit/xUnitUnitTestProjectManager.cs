@@ -21,7 +21,9 @@ namespace xUnit.net.TestGenerator
         public xUnitUnitTestProjectManager(IServiceProvider serviceProvider, INaming naming)
             : base(serviceProvider, naming)
         {
+            
         }
+
         /// <summary>
         /// Returns the full namespace that contains the test framework code elements for a given source project.
         /// </summary>

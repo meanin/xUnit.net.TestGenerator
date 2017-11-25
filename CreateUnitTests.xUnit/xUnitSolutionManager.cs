@@ -38,7 +38,7 @@ namespace xUnit.net.TestGenerator
             if (sourceMethod == null)
                 throw new ArgumentNullException(nameof(sourceMethod));
 
-            TraceLogger.LogInfo("xUnitSolutionManager.OnUnitTestProjectCreated: Adding reference to NUnit assemblies through nuget.");
+            TraceLogger.LogInfo("xUnitSolutionManager.OnUnitTestProjectCreated: Adding reference to XUnit assemblies through nuget.");
             
             base.OnUnitTestProjectCreated(unitTestProject, sourceMethod);
 
